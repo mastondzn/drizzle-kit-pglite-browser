@@ -29,6 +29,7 @@ export async function migrate(db: PgliteDatabase<typeof schema>) {
 
   for (const entry of journal.entries) {
     try {
+      // ... and this path
       const migration = await files[`./migrations/${entry.tag}.sql`]!();
       const statements = migration.split("--> statement-breakpoint");
 
