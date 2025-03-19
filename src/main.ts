@@ -1,5 +1,3 @@
-import typescriptLogo from "./typescript.svg";
-import viteLogo from "/vite.svg";
 import { db } from "./db";
 import { kv } from "./db/schema";
 import { eq } from "drizzle-orm";
@@ -13,14 +11,8 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
         <div class="max-w-md mx-auto">
           <div class="flex items-center space-x-5">
-            <a href="https://vite.dev" target="_blank">
-              <img src="${viteLogo}" class="h-12 w-auto" alt="Vite logo" />
-            </a>
-            <a href="https://www.typescriptlang.org/" target="_blank">
-              <img src="${typescriptLogo}" class="h-12 w-auto" alt="TypeScript logo" />
-            </a>
             <div class="text-2xl font-semibold text-gray-900">
-              <h1>Drizzle KV Store</h1>
+              <h1>PGlite & Drizzle KV Store</h1>
             </div>
           </div>
           
