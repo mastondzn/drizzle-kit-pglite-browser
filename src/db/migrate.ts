@@ -1,5 +1,5 @@
 import type { PgliteDatabase } from "drizzle-orm/pglite";
-import type * as schema from "./schema";
+import type { schema } from "./";
 import type { PgDialect, PgSession } from "drizzle-orm/pg-core";
 
 // cache the migration status for the current session
@@ -13,7 +13,7 @@ let migrated = false;
  * @see https://github.com/drizzle-team/drizzle-orm/blob/main/drizzle-orm/src/pglite/migrator.ts
  * @see https://github.com/drizzle-team/drizzle-orm/blob/main/drizzle-orm/src/migrator.ts#L48
  */
-export async function migrate(db: PgliteDatabase<typeof schema>) {
+export async function migrate(database: PgliteDatabase<typeof schema>) {
   if (migrated) return;
 
   const files = import.meta.glob<boolean, string, string>(
@@ -45,15 +45,13 @@ export async function migrate(db: PgliteDatabase<typeof schema>) {
     }
   }
 
-  // they're marked as internal unfortunately
-  // @ts-expect-error
-  await (db.dialect as PgDialect).migrate(
-    migrations,
-    // @ts-expect-error
-    db.session as PgSession,
-    ""
-  );
+  // PgDialect and PgSession are marked as internal with stripInternal so we patch it
+  const db = database as PgliteDatabase<typeof schema> & {
+    dialect: PgDialect;
+    session: PgSession;
+  };
 
+  await db.dialect.migrate(migrations, db.session, "");
   migrated = true;
 }
 
